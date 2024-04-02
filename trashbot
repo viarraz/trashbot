@@ -1,0 +1,44 @@
+import discord
+import random
+import requests
+import os
+from discord.ext import commands
+from bot_logic import gen_pass
+from bot_logic import flip_coin
+
+with open("token.txt", "r") as f:
+    token = f.read()
+
+intents = discord.Intents.default()
+intents.message_content = True
+
+bot = commands.Bot(command_prefix='$', intents=intents)
+
+links = {
+'https://www.cleanipedia.com/id/manfaat-membuang-sampah-pada-tempatnya.html',
+'https://www.cleanipedia.com/id/kepedulian-lingkungan/cara-mendaur-ulang-plastik-yang-benar.html',
+'https://greeneration.org/publication/green-info/kurangi-sampah-selamatkan-hidup/',
+}
+
+benefits = "Mengurangi tumpukan sampah organik yang berserakan di sekitar tempat tinggal.\n" \
+            "Membantu pengelolaan sampah secara dini dan cepat.\n" \
+               "Menghemat biaya pengangkutan sampah ke tempat pembuangan akhir (TPA).\n" \
+               "Mengurangi kebutuhan lahan TPA.\n" \
+               "Melestarikan sumber daya alam planet Bumi yang sangat terbatas.\n" \
+
+@bot.event
+async def on_ready():
+    print(f'We have logged in as {bot.user}')  
+
+@bot.command()
+async def link(ctx):
+    await ctx.send("Ini adalah link tentang sampah, dan bagaimana mencegahnya!")
+    for link in links:
+        await ctx.send(link)
+
+@bot.command()
+async def how(ctx):
+    await ctx.send(f"Mengurangi sampah tentu ada caranya, salah satunya menggunakan teknik 3R! Manfaat dari menerapkan prinsip 3R adalah:\n{benefits}")
+
+bot.run(token)
+
